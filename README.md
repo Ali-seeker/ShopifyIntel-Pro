@@ -1,10 +1,11 @@
-# Universal E-Commerce & Shopify Revenue Intelligence Engine PRO
+# ShopifyIntel PRO — Universal E-Commerce & Shopify Revenue Intelligence Engine
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Shopify%20%7C%20WooCommerce%20%7C%20Custom-orange.svg)]()
 [![Status](https://img.shields.io/badge/status-Production%20Ready-brightgreen.svg)]()
+[![Repository](https://img.shields.io/badge/GitHub-ShopifyIntel--Pro-black?logo=github)](https://github.com/Ali-seeker/ShopifyIntel-Pro)
 
 A high-performance, enterprise-grade revenue estimation and store intelligence platform. Designed to analyze any e-commerce storefront (**Shopify**, **WooCommerce / WordPress**, and **Custom E-Commerce**) with deep-dive financial calculations, catalog breakdown, multi-currency normalization, and high-throughput batch automation (1,000+ stores).
 
@@ -78,8 +79,8 @@ This automatically verifies dependencies and launches the dashboard at `http://l
 
 1. **Clone repository:**
    ```bash
-   git clone <REPO_URL>
-   cd <REPO_DIRECTORY>
+   git clone https://github.com/Ali-seeker/ShopifyIntel-Pro.git
+   cd ShopifyIntel-Pro
    ```
 
 2. **Install dependencies:**
