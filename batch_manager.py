@@ -309,31 +309,7 @@ class BatchManager:
             }
 
         # Format CSV row adhering to BATCH_CSV_COLUMNS
-        csv_row = [
-            item["domain"],
-            item["input_url"],
-            "Yes" if item["is_ecommerce"] else "No",
-            item["platform"],
-            item["platform_category"],
-            "Yes" if item["is_shopify"] else "No",
-            item["store_name"],
-            item["niche"],
-            item["monthly_revenue"],
-            item["annual_revenue"],
-            item["daily_revenue"],
-            item["monthly_traffic"],
-            item["true_cart_aov"],
-            item["dynamic_cr"],
-            item["products_count"],
-            item["currency"],
-            item["theme"],
-            "; ".join(item["pixels"]) if item["pixels"] else "-",
-            item["contact_email"],
-            item["best_seller_title"],
-            item["best_seller_price"],
-            item["status"],
-            item["analyzed_at"]
-        ]
+        csv_row = self._format_item_to_csv_row(item)
 
         # Progressive thread-safe update
         with self.lock:
@@ -438,6 +414,34 @@ class BatchManager:
                 "items": batch["items"]
             }
 
+    def _format_item_to_csv_row(self, item: Dict[str, Any]) -> List[Any]:
+        """Maps an internal item dictionary to a standard BATCH_CSV_COLUMNS row."""
+        return [
+            item.get("domain", ""),
+            item.get("input_url", ""),
+            "Yes" if item.get("is_ecommerce") else "No",
+            item.get("platform", ""),
+            item.get("platform_category", ""),
+            "Yes" if item.get("is_shopify") else "No",
+            item.get("store_name", ""),
+            item.get("niche", ""),
+            item.get("monthly_revenue", 0.0),
+            item.get("annual_revenue", 0.0),
+            item.get("daily_revenue", 0.0),
+            item.get("monthly_traffic", 0),
+            item.get("true_cart_aov", 0.0),
+            item.get("dynamic_cr", 0.0),
+            item.get("products_count", 0),
+            item.get("currency", "-"),
+            item.get("theme", "-"),
+            "; ".join(item.get("pixels", [])) if item.get("pixels") else "-",
+            item.get("contact_email", ""),
+            item.get("best_seller_title", ""),
+            item.get("best_seller_price", 0.0),
+            item.get("status", ""),
+            item.get("analyzed_at", "")
+        ]
+
     def get_batch_csv_content(self, batch_id: str, filter_type: str = "all", only_shopify: bool = False) -> Optional[str]:
         """
         Returns full CSV content with flexible multi-platform filtering:
@@ -449,6 +453,32 @@ class BatchManager:
         - filter_type='non_ecommerce': Non-commerce filtered websites
         """
         csv_path = self.get_batch_csv_path(batch_id)
+        if not csv_path or not os.path.exists(csv_path):
+            # Self-healing: if CSV file is missing, automatically reconstruct it from memory or JSON
+            batch_data = self.batches.get(batch_id)
+            if not batch_data:
+                json_path = os.path.join(self.batches_dir, f"{batch_id}.json")
+                if os.path.exists(json_path):
+                    try:
+                        with open(json_path, "r", encoding="utf-8") as jf:
+                            batch_data = json.load(jf)
+                            self.batches[batch_id] = batch_data
+                    except Exception as e:
+                        print(f"[BatchManager] JSON load fallback error: {e}")
+                        batch_data = None
+
+            if batch_data and batch_data.get("items"):
+                try:
+                    reconstructed_path = os.path.join(self.batches_dir, f"{batch_id}.csv")
+                    with open(reconstructed_path, "w", newline="", encoding="utf-8-sig") as cf:
+                        writer = csv.writer(cf)
+                        writer.writerow(BATCH_CSV_COLUMNS)
+                        for it in batch_data["items"]:
+                            writer.writerow(self._format_item_to_csv_row(it))
+                    csv_path = reconstructed_path
+                except Exception as e:
+                    print(f"[BatchManager] CSV reconstruction error: {e}")
+
         if not csv_path or not os.path.exists(csv_path):
             return None
 
