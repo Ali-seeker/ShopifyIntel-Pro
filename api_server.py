@@ -357,16 +357,29 @@ async def export_products_csv(data: dict):
 if __name__ == "__main__":
     import uvicorn
     import socket
+    import webbrowser
+    import threading
+    import time
 
     def is_port_in_use(port: int) -> bool:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             return s.connect_ex(('127.0.0.1', port)) == 0
 
     port = 8080 if is_port_in_use(8000) else 8000
+    docs_url = f"http://localhost:{port}/docs"
     print("\n" + "="*65)
     print(">> ShopifyIntel PRO — Headless REST API Server v2.0")
     print(f">> API Base URL:    http://localhost:{port}")
-    print(f">> Swagger Docs:    http://localhost:{port}/docs")
+    print(f">> Swagger Docs:    {docs_url}")
     print(f">> ReDoc Specs:     http://localhost:{port}/redoc")
     print("="*65 + "\n")
+
+    def _open_browser():
+        time.sleep(1.2)
+        try:
+            webbrowser.open(docs_url)
+        except Exception:
+            pass
+
+    threading.Thread(target=_open_browser, daemon=True).start()
     uvicorn.run("api_server:app", host="127.0.0.1", port=port, reload=False)
