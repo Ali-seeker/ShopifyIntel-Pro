@@ -18,7 +18,7 @@ Double-click `run_api.bat` or run:
 ```cmd
 run_api.bat
 ```
-The interactive Swagger UI will automatically open at **`http://localhost:8000/docs`**.
+The server will start and automatically open the interactive Swagger UI in your browser at **`http://localhost:8000/docs`** *(or `http://localhost:8080/docs` if port 8000 is occupied)*.
 
 ### Option B: Python CLI
 ```bash
@@ -26,14 +26,14 @@ pip install -r requirements.txt
 python api_server.py
 ```
 
-### Option C: Docker Container
+### Option C: Docker Container (Optional)
+```bash
+docker compose up -d
+```
+Or:
 ```bash
 docker build -t shopifyintel-api .
 docker run -p 8000:8000 shopifyintel-api
-```
-Or with docker-compose:
-```bash
-docker compose up -d
 ```
 
 ---
@@ -41,7 +41,7 @@ docker compose up -d
 ## 2. Interactive API Documentation
 
 When the server is running, interactive documentation is accessible at:
-* **Swagger UI (Interactive API Tester):** [`http://localhost:8000/docs`](http://localhost:8000/docs)
+* **Swagger UI (Interactive API Tester):** [`http://localhost:8000/docs`](http://localhost:8000/docs) *(or `http://localhost:8080/docs`)*
 * **ReDoc (Technical Documentation):** [`http://localhost:8000/redoc`](http://localhost:8000/redoc)
 * **OpenAPI 3.1 JSON Schema:** [`http://localhost:8000/openapi.json`](http://localhost:8000/openapi.json)
 
