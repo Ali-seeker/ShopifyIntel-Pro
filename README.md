@@ -63,19 +63,28 @@ A high-performance, enterprise-grade revenue estimation and store intelligence p
 
 ---
 
-## Quickstart & Installation
+## Quickstart & Modes of Operation
+
+This platform can run in two distinct modes depending on your architecture:
+
+| Mode | Entry Point | Description | Key Feature |
+| :--- | :--- | :--- | :--- |
+| **1. Full-Stack Web Dashboard** | `run.bat` or `python server.py` | Complete SaaS UI + REST API | Beautiful dashboard at `http://localhost:8000` |
+| **2. Pure Headless REST API** | `run_api.bat` or `python api_server.py` | API-only backend (Zero Frontend) | Swagger UI at `http://localhost:8000/docs` |
+
+> [!TIP]
+> For complete developer API documentation, cURL snippets, and Python/Node.js integration examples, see **[`API_DOCUMENTATION.md`](API_DOCUMENTATION.md)**.
+
+---
 
 ### Prerequisites
 * **Python 3.10+** installed on your system.
 
-### Option A: One-Click Startup (Windows)
-Double-click `run.bat` or run:
-```cmd
-run.bat
-```
-This automatically verifies dependencies and launches the dashboard at `http://localhost:8000`.
+### One-Click Launchers (Windows)
+* **To launch Web Dashboard:** Double-click `run.bat` (opens `http://localhost:8000`).
+* **To launch Headless API:** Double-click `run_api.bat` (opens `http://localhost:8000/docs`).
 
-### Option B: Manual Startup
+### Manual CLI Startup
 
 1. **Clone repository:**
    ```bash
@@ -88,11 +97,21 @@ This automatically verifies dependencies and launches the dashboard at `http://l
    pip install -r requirements.txt
    ```
 
-3. **Launch the server:**
-   ```bash
-   python server.py
-   ```
-   *The interactive web interface is now accessible at `http://localhost:8000`.*
+3. **Launch in your preferred mode:**
+   * **Full Dashboard Mode:**
+     ```bash
+     python server.py
+     ```
+   * **Headless REST API Mode:**
+     ```bash
+     python api_server.py
+     ```
+
+### Docker / Cloud Deployment (API Mode)
+```bash
+docker compose up -d
+```
+*The headless API is now live on `http://localhost:8000` with interactive docs at `http://localhost:8000/docs`.*
 
 ---
 

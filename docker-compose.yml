@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  shopifyintel-api:
+    build: .
+    container_name: shopifyintel-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    volumes:
+      - ./batches:/app/batches
+      - ./history.json:/app/history.json
