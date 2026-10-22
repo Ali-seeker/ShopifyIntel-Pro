@@ -1,14 +1,15 @@
 @echo off
-title Shopify & Universal E-Commerce Revenue Intelligence Engine PRO
+title ShopifyIntel PRO — Headless REST API Server
 color 0B
 echo ====================================================================
-echo   Shopify & Universal E-Commerce Revenue Intelligence Engine PRO
-echo   High-Throughput Automation & Deep-Dive Store Analytics Platform
+echo   ShopifyIntel PRO — Headless REST API Server
+echo   FastAPI Engine ^| Interactive Swagger Docs: http://localhost:8000/docs
 echo ====================================================================
 echo.
-echo Starting FastAPI Web Server...
-echo Dashboard URL: http://localhost:8000
+echo Starting Headless REST API on http://localhost:8000 ...
+echo Swagger UI Documentation: http://localhost:8000/docs
+echo ReDoc Documentation:      http://localhost:8000/redoc
 echo.
-start "" http://localhost:8000
-python server.py
+start "" http://localhost:8000/docs
+python api_server.py
 pause
